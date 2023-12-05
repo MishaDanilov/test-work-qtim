@@ -1,0 +1,32 @@
+version: '3.3'
+
+volumes:
+  postgresql_data:
+  main_node_modules:
+
+services:
+  postgresql:
+    container_name: postgresql
+    restart: always
+    image: centos/postgresql-96-centos7
+    env_file:
+      - .env
+    volumes:
+      - postgresql_data:/var/lib/pgsql/data
+    expose:
+      - '5432'
+  main:
+    container_name: main
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - main_node_modules:/app/node_modules
+    links:
+      - postgresql
+    env_file:
+      - .env
+    depends_on:
+      - postgresql

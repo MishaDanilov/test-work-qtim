@@ -1,0 +1,1 @@
+export { CreateNewsDto } from './CreateNewsDto';
